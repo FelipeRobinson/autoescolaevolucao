@@ -226,12 +226,12 @@ nav {
     }
 
     .history .textinho h1 {
-        font-size: 7vw;
+        font-size: 5vw;
     }
 
     .history .textinho p {
-        font-size: 4vw;
-        line-height: 1.7;
+        font-size: 2.5vw;
+        line-height: 1;
     }
 
     .pacotes h1 {
@@ -295,8 +295,8 @@ nav {
 }
 
 .history {
-    align-content: center;
-    justify-items: center;
+    margin: 5vw auto;
+    display: flex;
     background-color: #f5ab18;
     width: 90%;
     height: auto;
@@ -306,6 +306,10 @@ nav {
 .textinho {
     text-align: center;
     margin: 2vw;
+}
+
+.textinho h1 {
+    padding-bottom: 1vw;
 }
 
 
@@ -324,7 +328,7 @@ nav {
 .pacotes {
     background-color: rgb(180, 180, 180);
     width: 50vh;
-    height: 350px;
+    height: auto;
     border-radius: 20px;
     padding: 2vh;
 }
