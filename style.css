@@ -76,6 +76,27 @@ nav {
     color: rgb(200, 200, 200);
 }
 
+/* FOOTER ICONS */
+#footer-icons {
+    display: flex;
+    gap: 1.5vw;
+    font-size: 1.2vw;
+}
+
+#footer-icons a {
+    color: white;
+    text-decoration: none;
+}
+
+#footer-icons a:visited {
+    color: white;
+}
+
+#footer-icons a:hover {
+    color: rgb(200, 200, 200);
+}
+
+/* ================= BOTÃO MATRICULA DESKTOP ================= */
 #botao {
     width: 10vw;
     height: 3vw;
@@ -92,6 +113,11 @@ nav {
 
 #botao:hover {
     background-color: #fbc421;
+}
+
+/* BOTÃO MOBILE — oculto no desktop */
+#botao-menu {
+    display: none;
 }
 
 /* ================= HAMBURGUER ================= */
@@ -132,23 +158,13 @@ nav {
     display: none;
 }
 
-/* Botão mobile oculto por padrão (desktop) */
-#botao-mobile {
-    display: none;
-}
-
 @media (max-width: 768px) {
 
     #hamburguer {
         display: flex;
     }
 
-    /* Oculta ícones e botão da navbar no mobile */
     #icons {
-        display: none;
-    }
-
-    #botao {
         display: none;
     }
 
@@ -158,7 +174,7 @@ nav {
         left: -100%;
         width: 75%;
         height: 100vh;
-        background: rgba(0, 0, 0, 0.9);
+        background: rgb(0, 0, 0);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -178,37 +194,13 @@ nav {
         color: white;
     }
 
-    /* Botão "Se Matricular" dentro do menu mobile:
-       margin-top: auto empurra ele e tudo abaixo para o fundo */
-    #botao-mobile {
-        display: inline-block;
-        margin-top: auto;
-        padding: 12px 28px;
-        border-radius: 30px;
-        border: none;
-        background-color: #f5ab18;
-        color: white !important;
-        font-size: 4.5vw;
-        font-family: 'Inter', sans-serif;
-        transition: 0.5s;
-        cursor: pointer;
-        text-decoration: none !important;
-        text-align: center;
-    }
-
-    #botao-mobile:hover {
-        background-color: #fbc421;
-    }
-
-    /* Ícones sociais dentro do menu mobile — sem margin-top: auto,
-       ficam logo abaixo do botão */
     #menu-icons {
         display: flex;
         gap: 20px;
         font-size: 6vw;
         color: white;
+        margin-top: auto;
         width: 100%;
-        /* sem margin-top: auto aqui — o botão acima já empurra o bloco */
     }
 
     #menu-icons a {
@@ -216,7 +208,32 @@ nav {
         text-decoration: none;
     }
 
-    /* ================= FONTES MOBILE AUMENTADAS ================= */
+    /* BOTÃO DESKTOP SOME NO MOBILE */
+    #botao {
+        display: none;
+    }
+
+    /* BOTÃO MATRICULA DENTRO DO MENU MOBILE */
+    #botao-menu {
+        display: block;
+        width: 100%;
+        padding: 14px 0;
+        border-radius: 30px;
+        border: none;
+        background-color: #f5ab18;
+        color: white;
+        font-size: 5vw;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: 0.5s;
+        text-align: center;
+    }
+
+    #botao-menu:hover {
+        background-color: #fbc421;
+    }
+
+    /* ================= FONTES MOBILE ================= */
     #video-overlay h1 {
         font-size: 10vw;
     }
@@ -245,6 +262,11 @@ nav {
     #one h1 {
         font-size: 3vw;
     }
+
+    #footer-icons {
+        gap: 20px;
+        font-size: 6vw;
+    }
 }
 
 /* ================= VIDEO ================= */
@@ -259,12 +281,9 @@ nav {
     position: absolute;
     top: 0;
     left: 0;
-
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
     opacity: 0.9;
     filter: brightness(0.6);
 }
@@ -311,7 +330,6 @@ nav {
 .textinho h1 {
     padding-bottom: 1vw;
 }
-
 
 .second {
     margin: 2vw 0;
