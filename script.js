@@ -37,3 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+const btnHistoria = document.getElementById('btn-historia');
+if (btnHistoria) {
+    btnHistoria.addEventListener('click', function () {
+        const ocultos = document.querySelectorAll('.p-colapsavel');
+        const expandido = ocultos[0].classList.contains('expandido');
+        ocultos.forEach(el => el.classList.toggle('expandido'));
+        this.textContent = expandido ? 'Ler mais ↓' : 'Ler menos ↑';
+    });
+}

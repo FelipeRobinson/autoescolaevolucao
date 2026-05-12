@@ -158,115 +158,9 @@ nav {
     display: none;
 }
 
-@media (max-width: 768px) {
-
-    #hamburguer {
-        display: flex;
-    }
-
-    #icons {
-        display: none;
-    }
-
-    #menu {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 75%;
-        height: 100vh;
-        background: rgb(0, 0, 0);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 80px 30px 40px 30px;
-        gap: 25px;
-        transition: 0.9s ease;
-        z-index: 2000;
-        box-sizing: border-box;
-    }
-
-    #menu.active {
-        left: 0;
-    }
-
-    #menu a {
-        font-size: 5vw;
-        color: white;
-    }
-
-    #menu-icons {
-        display: flex;
-        gap: 20px;
-        font-size: 6vw;
-        color: white;
-        margin-top: auto;
-        width: 100%;
-    }
-
-    #menu-icons a {
-        color: white;
-        text-decoration: none;
-    }
-
-    /* BOTÃO DESKTOP SOME NO MOBILE */
-    #botao {
-        display: none;
-    }
-
-    /* BOTÃO MATRICULA DENTRO DO MENU MOBILE */
-    #botao-menu {
-        display: block;
-        width: 100%;
-        padding: 14px 0;
-        border-radius: 30px;
-        border: none;
-        background-color: #f5ab18;
-        color: white;
-        font-size: 5vw;
-        font-family: 'Inter', sans-serif;
-        cursor: pointer;
-        transition: 0.5s;
-        text-align: center;
-    }
-
-    #botao-menu:hover {
-        background-color: #fbc421;
-    }
-
-    /* ================= FONTES MOBILE ================= */
-    #video-overlay h1 {
-        font-size: 10vw;
-    }
-
-    #video-overlay h2 {
-        font-size: 4.5vw;
-    }
-
-    .history .textinho h1 {
-        font-size: 5vw;
-    }
-
-    .history .textinho p {
-        font-size: 2.5vw;
-        line-height: 1;
-    }
-
-    .pacotes h1 {
-        font-size: 6vw;
-    }
-
-    .pacotes h3 {
-        font-size: 4vw;
-    }
-
-    #one h1 {
-        font-size: 3vw;
-    }
-
-    #footer-icons {
-        gap: 20px;
-        font-size: 6vw;
-    }
+/* ================= BOTÃO LER MAIS — oculto no desktop ================= */
+.btn-ler-mais {
+    display: none;
 }
 
 /* ================= VIDEO ================= */
@@ -381,4 +275,146 @@ footer {
     font-size: 1vw;
     margin-left: 5vw;
     color: white;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+    #hamburguer {
+        display: flex;
+    }
+
+    #icons {
+        display: none;
+    }
+
+    #menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 75%;
+        height: 100vh;
+        background: rgb(0, 0, 0);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 30px 40px 30px;
+        gap: 25px;
+        transition: 0.9s ease;
+        z-index: 2000;
+        box-sizing: border-box;
+    }
+
+    #menu.active {
+        left: 0;
+    }
+
+    #menu a {
+        font-size: 5vw;
+        color: white;
+    }
+
+    #menu-icons {
+        display: flex;
+        gap: 20px;
+        font-size: 6vw;
+        color: white;
+        margin-top: auto;
+        width: 100%;
+    }
+
+    #menu-icons a {
+        color: white;
+        text-decoration: none;
+    }
+
+    /* BOTÃO DESKTOP SOME NO MOBILE */
+    #botao {
+        display: none;
+    }
+
+    /* BOTÃO MATRICULA DENTRO DO MENU MOBILE */
+    #botao-menu {
+        display: block;
+        width: 100%;
+        padding: 14px 0;
+        border-radius: 30px;
+        border: none;
+        background-color: #f5ab18;
+        color: white;
+        font-size: 5vw;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: 0.5s;
+        text-align: center;
+    }
+
+    #botao-menu:hover {
+        background-color: #fbc421;
+    }
+
+    /* ================= FONTES MOBILE ================= */
+    #video-overlay h1 {
+        font-size: 10vw;
+    }
+
+    #video-overlay h2 {
+        font-size: 4.5vw;
+    }
+
+    .history .textinho h1 {
+        font-size: 5vw;
+    }
+
+    .history .textinho p {
+        font-size: 2.5vw;
+        line-height: 1;
+    }
+
+    .pacotes h1 {
+        font-size: 6vw;
+    }
+
+    .pacotes h3 {
+        font-size: 4vw;
+    }
+
+    #one h1 {
+        font-size: 3vw;
+    }
+
+    #footer-icons {
+        gap: 20px;
+        font-size: 6vw;
+    }
+
+    /* ================= BOTÃO LER MAIS — visível no mobile ================= */
+    .btn-ler-mais {
+        display: block;
+        margin: 12px auto 0;
+        background: none;
+        border: 2px solid #633806;
+        color: #633806;
+        border-radius: 20px;
+        padding: 6px 22px;
+        font-size: 3.5vw;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-ler-mais:hover {
+        background: rgba(0, 0, 0, 0.08);
+    }
+
+    /* PARÁGRAFOS COLAPSÁVEIS — escondidos por padrão no mobile */
+    .p-colapsavel {
+        display: none;
+        transition: all 0.3s ease;
+    }
+
+    /* Quando expandidos pelo JS */
+    .p-colapsavel.expandido {
+        display: block;
+    }
 }
