@@ -18,8 +18,8 @@ hamburguer.addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", function () {
 
     const numeros = [
-        "5519989132598",
-        "5519992947773"
+        "+5519989132598",
+        "+5519992947773"
     ];
 
     const botoes = document.querySelectorAll(".whatsapp-btn");
