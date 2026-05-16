@@ -1,3 +1,4 @@
+/* FUNÇÃO SCROLL */
 window.addEventListener("scroll", function () {
     const nav = document.getElementById("navbar");
     if (window.scrollY > window.innerHeight * 0.8) {
@@ -7,6 +8,8 @@ window.addEventListener("scroll", function () {
     }
 });
 
+
+/* MENU HAMBURGUER */
 const hamburguer = document.getElementById("hamburguer");
 const menu = document.getElementById("menu");
 
@@ -15,6 +18,9 @@ hamburguer.addEventListener("click", () => {
     hamburguer.classList.toggle("active");
 });
 
+
+
+/* FUNDÃO CONTATO ALEATÓRIO */
 document.addEventListener("DOMContentLoaded", function () {
 
     const numeros = [
@@ -37,3 +43,4 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
