@@ -320,11 +320,40 @@ nav {
     width: 90%;
     height: auto;
     border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transform: translateY(55px) scale(0.98);
+    transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.8s ease;
+}
+
+.history::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.28), transparent 42%);
+    transform: translateX(-100%);
+    pointer-events: none;
+}
+
+.history.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    box-shadow: 0 24px 55px rgba(0, 0, 0, 0.14);
+    animation: historyShadowPulse 3.8s ease-in-out infinite;
+}
+
+.history.show::before {
+    animation: historyLightSweep 3.6s ease-in-out infinite;
 }
 
 .textinho {
+    position: relative;
+    z-index: 1;
     text-align: center;
-    margin: 2vw;
+    width: 100%;
+    margin: 2.4vw;
 }
 
 .textinho h1 {
@@ -332,14 +361,345 @@ nav {
 }
 
 .history-title {
+    display: inline-block;
+    position: relative;
     opacity: 0;
     transform: translateY(35px) scale(0.96);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    background: linear-gradient(90deg, #000000, #5d3600, #000000);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: opacity 0.7s ease 0.12s, transform 0.7s ease 0.12s;
 }
 
-.history-title.show {
+.history-title::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 4px;
+    border-radius: 999px;
+    background-color: #000000;
+    transform: translateX(-50%);
+    transition: width 0.8s ease 0.35s;
+}
+
+.history.show .history-title {
     opacity: 1;
     transform: translateY(0) scale(1);
+    animation: historyTitleGlow 2.8s ease-in-out infinite, historyTitleGradient 4s ease-in-out infinite;
+}
+
+.history.show .history-title::after {
+    width: 72%;
+}
+
+.history-journey {
+    max-width: 850px;
+    margin: 0.8rem auto 1rem auto;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s;
+}
+
+.history.show .history-journey {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.journey-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+    margin-bottom: 0.75rem;
+}
+
+.journey-step {
+    min-height: 52px;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #000000;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.journey-step i {
+    color: #ff681f;
+    transition: transform 0.3s ease;
+}
+
+.journey-step:hover,
+.journey-step.active {
+    background: rgba(255, 255, 255, 0.52);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+}
+
+.journey-step:hover i,
+.journey-step.active i {
+    transform: scale(1.15) rotate(-6deg);
+}
+
+.journey-card {
+    min-height: 72px;
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.78);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.18);
+}
+
+.journey-card strong {
+    font-size: clamp(1rem, 1.35vw, 1.25rem);
+}
+
+.journey-card span {
+    font-size: clamp(0.88rem, 1.05vw, 1rem);
+    line-height: 1.35;
+}
+
+.journey-card.changing {
+    animation: journeyCardChange 0.35s ease;
+}
+
+.history .textinho p {
+    opacity: 0;
+    max-width: 980px;
+    margin: 0.7rem auto;
+    padding: 0.75rem 1rem;
+    border-left: 3px solid rgba(0, 0, 0, 0.28);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    text-align: left;
+    line-height: 1.42;
+    font-size: clamp(0.92rem, 1.05vw, 1rem);
+    font-weight: 500;
+    transform: translateY(24px) translateX(-18px);
+    transition: opacity 0.7s ease, transform 0.7s ease, background-color 0.35s ease, border-color 0.35s ease;
+}
+
+.history-summary {
+    text-align: center !important;
+    font-weight: 800 !important;
+    background: rgba(255, 255, 255, 0.22) !important;
+}
+
+.history-text {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.7s ease, opacity 0.45s ease;
+}
+
+.history.expanded .history-text {
+    max-height: 900px;
+    opacity: 1;
+}
+
+.history-toggle {
+    margin-top: 0.55rem;
+    padding: 0.75rem 1.2rem;
+    border: none;
+    border-radius: 999px;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.history-toggle:hover {
+    transform: translateY(-2px);
+    background-color: #ff681f;
+}
+
+.history-toggle i {
+    transition: transform 0.3s ease;
+}
+
+.history.expanded .history-toggle i {
+    transform: rotate(180deg);
+}
+
+.history.show .textinho p {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+}
+
+.history .textinho p:nth-of-type(2) {
+    transform: translateY(24px) translateX(18px);
+}
+
+.history.show .textinho p:nth-of-type(2) {
+    transform: translateY(0) translateX(0);
+}
+
+.history .textinho p:hover {
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(0, 0, 0, 0.7);
+    transform: translateY(-3px) translateX(0);
+}
+
+.history.show .textinho p:nth-of-type(1) {
+    transition-delay: 0.25s;
+}
+
+.history.show .textinho p:nth-of-type(2) {
+    transition-delay: 0.38s;
+}
+
+.history.show .textinho p:nth-of-type(3) {
+    transition-delay: 0.51s;
+}
+
+@keyframes historyLightSweep {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    35% {
+        opacity: 1;
+    }
+
+    70%,
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes historyShadowPulse {
+    0%,
+    100% {
+        box-shadow: 0 24px 55px rgba(0, 0, 0, 0.14);
+    }
+
+    50% {
+        box-shadow: 0 28px 65px rgba(0, 0, 0, 0.2);
+    }
+}
+
+@keyframes historyTitleGlow {
+    0%,
+    100% {
+        text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+
+    50% {
+        text-shadow: 0 0 18px rgba(255, 255, 255, 0.45);
+    }
+}
+
+@keyframes historyTitleGradient {
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes journeyCardChange {
+    0% {
+        opacity: 0.35;
+        transform: translateY(8px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .history {
+        width: 92%;
+        margin: 10vw auto;
+        border-radius: 18px;
+    }
+
+    .textinho {
+        margin: 6vw 4vw;
+    }
+
+    .history .textinho h1 {
+        font-size: 8vw;
+        line-height: 1.08;
+    }
+
+    .history-title::after {
+        height: 3px;
+    }
+
+    .history-journey {
+        margin: 0.7rem 0 0.85rem 0;
+    }
+
+    .journey-steps {
+        grid-template-columns: 1fr;
+        gap: 0.45rem;
+    }
+
+    .journey-step {
+        min-height: 44px;
+        font-size: 4vw;
+    }
+
+    .journey-card {
+        min-height: auto;
+        padding: 0.8rem;
+        text-align: left;
+    }
+
+    .history .textinho p {
+        margin: 1rem 0;
+        padding: 0.95rem 1rem;
+        font-size: 4vw;
+        line-height: 1.45;
+        border-left-width: 3px;
+        transform: translateY(22px);
+    }
+
+    .history.expanded .history-text {
+        max-height: 1400px;
+    }
+
+    .history-toggle {
+        width: 100%;
+        min-height: 44px;
+        font-size: 4vw;
+    }
+
+    .history .textinho p:nth-of-type(2) {
+        transform: translateY(22px);
+    }
+
+    .history.show .textinho p,
+    .history.show .textinho p:nth-of-type(2),
+    .history .textinho p:hover {
+        transform: translateY(0);
+    }
 }
 
 .second {
@@ -347,24 +707,79 @@ nav {
     padding: 0 2vw;
     background-color: white;
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
     gap: 30px;
-    justify-content: space-evenly;
     box-sizing: border-box;
 }
 
 .pacotes {
-    background-color: rgb(180, 180, 180, 0.5);
-    width: 50vh;
-    height: auto;
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    --rotate-x: 0deg;
+    --rotate-y: 0deg;
+
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.75), transparent 28%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(180, 180, 180, 0.55));
+    min-height: 300px;
     border-radius: 20px;
     padding: 2vh;
+    display: flex;
+    flex-direction: column;
+    grid-column: span 2;
+    box-sizing: border-box;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+    transform: perspective(900px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) translateY(0);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+    will-change: transform;
+}
+
+.pacotes::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(245, 171, 24, 0.8), rgba(255, 255, 255, 0.25), rgba(233, 90, 21, 0.75));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.pacotes::after {
+    content: none;
+}
+
+.pacotes:hover {
+    box-shadow: 0 24px 45px rgba(0, 0, 0, 0.18);
+}
+
+.pacotes:hover::before {
+    opacity: 1;
+}
+
+.pacotes > * {
+    position: relative;
+    z-index: 1;
+}
+
+#more_class {
+    grid-column: 1 / span 3;
+}
+
+#reciclagem {
+    grid-column: 4 / span 3;
 }
 
 .pacotes h1 {
     margin-top: 1vh;
-    background: linear-gradient(10deg, #ff9900, black);
+    background: linear-gradient(10deg, #ff681f, rgba(0, 0, 0, 0.5));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -372,36 +787,83 @@ nav {
     text-align: center;
 }
 
+.pacotes h3 {
+    margin: 0.55rem 0;
+    line-height: 1.25;
+}
+
+.cat {
+    width: 90%;
+    min-height: 3vw;
+    margin: auto auto 0 auto;
+    background-color: #f5ab18;
+    color: #000000;
+    font-family: 'Inter', sans-serif;
+    font-size: large;
+    border: none;
+    border-radius: 20px;
+    text-decoration:double ;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    box-shadow: 0 8px 18px rgba(245, 171, 24, 0.35);
+    transition: background-color 0.5s ease, color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cat i {
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.cat:hover {
+    background-color: #e95a15;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(233, 90, 21, 0.35);
+}
+
+.cat:hover i {
+    transform: translateY(3px);
+}
+
+@media (max-width: 768px) {
+    .second {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .pacotes,
+    #more_class,
+    #reciclagem {
+        grid-column: 1;
+        min-height: 320px;
+    }
+
+    .cat {
+        min-height: 42px;
+        font-size: 3.5vw;
+    }
+
+    .pacotes {
+        transform: none;
+    }
+}
+
 .fourth {
     margin: 5vw;
     z-index: 0;
 }
 
-/* ================= SIXTH / FALE CONOSCO =================
-   Ajustes rápidos desta sessão:
-   --sixth-bg: cor de fundo do bloco inteiro.
-   --sixth-text: cor dos textos e títulos.
-   --sixth-icon-bg: cor do círculo dos ícones.
-   --sixth-icon-color: cor do desenho dos ícones.
-   --sixth-button-bg: cor do botão "Cadastrar-se".
-   --sixth-button-hover: cor do botão ao passar o mouse.
-   Para trocar os ícones, altere as classes Font Awesome no HTML.
-*/
 .sixth {
-    --sixth-bg: #f5ab18;
-    --sixth-text: #000000;
-    --sixth-icon-bg: #000000;
-    --sixth-icon-color: #ffffff;
-    --sixth-input-bg: #ffffff;
-    --sixth-button-bg: #ff681f;
-    --sixth-button-hover: #e95a15;
-    --sixth-gap: 7vw;
-
     width: 90%;
+    margin: 0 auto;
     padding: 5vw 3vw;
     box-sizing: border-box;
-    background-color: var(--sixth-bg);
-    color: var(--sixth-text);
+    border-radius: 30px;
+    background-color: #f5ab18;
+    color: #000000;
 }
 
 .sixth-content {
@@ -410,7 +872,7 @@ nav {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--sixth-gap);
+    gap: 7vw;
 }
 
 .contatos,
@@ -425,11 +887,13 @@ nav {
     line-height: 1;
     font-weight: 900;
     letter-spacing: 0;
+    text-align: center;
 }
 
 #contact {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1.4rem;
     margin-bottom: 4vw;
 }
@@ -441,8 +905,8 @@ nav {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: var(--sixth-icon-bg);
-    color: var(--sixth-icon-color);
+    background-color: #000000;
+    color: #ffffff;
     text-decoration: none;
     font-size: clamp(1.8rem, 3vw, 2.6rem);
     transition: transform 0.3s ease, background-color 0.3s ease;
@@ -450,15 +914,14 @@ nav {
 
 #contact a:hover {
     transform: translateY(-4px);
-    background-color: var(--sixth-button-bg);
+    background-color: #ff681f;
 }
 
 .contatos p {
     max-width: 520px;
-    margin: 0;
+    margin: 0 auto;
+    text-align: center;
     font-size: clamp(1.3rem, 2.2vw, 1.9rem);
-    line-height: 1.35;
-    font-weight: 800;
 }
 
 .cadastro {
@@ -478,8 +941,9 @@ nav {
     margin-bottom: 1.8rem;
     padding: 0 12px;
     border: none;
-    background-color: var(--sixth-input-bg);
-    color: var(--sixth-text);
+    border-radius: 50px;
+    background-color: white;
+    color: black;
     font-size: clamp(1rem, 1.7vw, 1.5rem);
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
@@ -491,8 +955,8 @@ nav {
     margin-top: 1.2rem;
     border: none;
     border-radius: 30px;
-    background-color: var(--sixth-button-bg);
-    color: var(--sixth-text);
+    background-color: #ff681f;
+    color: white;
     font-size: clamp(1rem, 1.8vw, 1.5rem);
     font-family: 'Inter', sans-serif;
     cursor: pointer;
@@ -500,7 +964,7 @@ nav {
 }
 
 .cadastro button:hover {
-    background-color: var(--sixth-button-hover);
+    background-color: #e95a15;
     transform: translateY(-2px);
 }
 
