@@ -12,14 +12,62 @@ window.addEventListener("scroll", function () {
 /* MENU HAMBURGUER */
 const hamburguer = document.getElementById("hamburguer");
 const menu = document.getElementById("menu");
+const menuSectionLinks = document.querySelectorAll('#menu > a[href^="#"]');
 
-hamburguer.addEventListener("click", () => {
-    menu.classList.toggle("active");
+const closeMobileMenu = () => {
+    menu?.classList.remove("active");
+    hamburguer?.classList.remove("active");
+};
+
+const setActiveMenuLink = (sectionId) => {
+    menuSectionLinks.forEach(link => {
+        link.classList.toggle("active-link", link.getAttribute("href") === `#${sectionId}`);
+    });
+};
+
+hamburguer?.addEventListener("click", () => {
+    menu?.classList.toggle("active");
     hamburguer.classList.toggle("active");
+});
+
+menuSectionLinks.forEach(link => {
+    link.addEventListener("click", () => {
+        setActiveMenuLink(link.getAttribute("href").replace("#", ""));
+        closeMobileMenu();
+    });
 });
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    const menuSections = Array.from(menuSectionLinks)
+        .map(link => document.getElementById(link.getAttribute("href").replace("#", "")))
+        .filter(Boolean);
+
+    if (menuSections.length > 0) {
+        const initialSection = location.hash
+            ? menuSections.find(section => `#${section.id}` === location.hash)
+            : menuSections[0];
+
+        setActiveMenuLink((initialSection || menuSections[0]).id);
+
+        if ("IntersectionObserver" in window) {
+            const menuObserver = new IntersectionObserver((entries) => {
+                const visibleEntries = entries
+                    .filter(entry => entry.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+                if (visibleEntries[0]) {
+                    setActiveMenuLink(visibleEntries[0].target.id);
+                }
+            }, {
+                threshold: [0.35, 0.55],
+                rootMargin: "-25% 0px -45% 0px"
+            });
+
+            menuSections.forEach(section => menuObserver.observe(section));
+        }
+    }
+
     /* FUNÇÃO ANIMAÇÃO QUEM SOMOS */
     const historySection = document.querySelector(".history");
 
@@ -187,6 +235,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* FUNÇÃO CONTATO ALEATÓRIO */
     const cadastroForm = document.querySelector(".cadastro");
+    const cadastroNomeInput = document.getElementById("cadastro-email");
+    const cadastroNumeroInput = document.getElementById("cadastro-numero");
+    const cadastroError = document.getElementById("cadastro-error");
+    const whatsappAutoescola = "5519989132598";
+    const botoes = document.querySelectorAll("#botao, #botao-menu, .whatsapp-btn");
 
     if (cadastroForm) {
         cadastroForm.addEventListener("submit", function(e) {
@@ -194,19 +247,71 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const numeros = [
-        "5519989132598",
-        "5519992947773"
-    ];
+    const limparErroCadastro = () => {
+        if (cadastroError) {
+            cadastroError.textContent = "";
+        }
 
-    const botoes = document.querySelectorAll("#botao, #botao-menu, .whatsapp-btn");
+        cadastroNomeInput?.classList.remove("input-error");
+        cadastroNumeroInput?.classList.remove("input-error");
+        cadastroNomeInput?.removeAttribute("aria-invalid");
+        cadastroNumeroInput?.removeAttribute("aria-invalid");
+    };
 
-    const abrirWhatsAppAleatorio = (mensagem) => {
-        const numeroEscolhido = numeros[Math.floor(Math.random() * numeros.length)];
-        const url = `https://wa.me/${numeroEscolhido}?text=${encodeURIComponent(mensagem)}`;
+    const mostrarErroCadastro = (mensagem, campo) => {
+        if (cadastroError) {
+            cadastroError.textContent = mensagem;
+        }
+
+        campo?.classList.add("input-error");
+        campo?.setAttribute("aria-invalid", "true");
+        campo?.focus();
+    };
+
+    const formatarTelefoneWhatsApp = (telefone) => {
+        let digitos = telefone.replace(/\D/g, "");
+
+        if (digitos.startsWith("55")) {
+            digitos = digitos.slice(2);
+        }
+
+        const temDdd = digitos.length === 10 || digitos.length === 11;
+        const dddValido = temDdd && Number(digitos.slice(0, 2)) >= 11;
+
+        if (!temDdd || !dddValido) {
+            return null;
+        }
+
+        return `55${digitos}`;
+    };
+
+    cadastroNomeInput?.addEventListener("input", limparErroCadastro);
+    cadastroNumeroInput?.addEventListener("input", limparErroCadastro);
+
+    const abrirWhatsAppAutoescola = (mensagem) => {
+        const url = `https://wa.me/${whatsappAutoescola}?text=${encodeURIComponent(mensagem)}`;
 
         window.open(url, "_blank");
     };
+
+    const mensagensPacotes = {
+        "a-b": "Olá, vim do site e gostaria de mais informações sobre minha CNH CATEGORIA A/B.",
+        "a": "Olá, vim do site e gostaria de mais informações sobre minha CNH CATEGORIA A.",
+        "b": "Olá, vim do site e gostaria de mais informações sobre minha CNH CATEGORIA B.",
+        "more_class": "Olá, vim do site e gostaria de mais informações sobre aulas para recém habilitados.",
+        "reciclagem": "Olá, vim do site e gostaria de mais informações sobre reciclagem da CNH."
+    };
+
+    document.querySelectorAll(".pacotes .cat").forEach(botaoPacote => {
+        botaoPacote.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            const pacote = botaoPacote.closest(".pacotes");
+            const mensagem = mensagensPacotes[pacote?.id] || "Olá, vim do site e gostaria de mais informações.";
+
+            abrirWhatsAppAutoescola(mensagem);
+        });
+    });
 
     botoes.forEach(btn => {
         btn.addEventListener("click", function(e) {
@@ -215,21 +320,26 @@ document.addEventListener("DOMContentLoaded", function () {
             let mensagem = "Olá, vim pelo site e gostaria de mais informações sobre adquirir a minha CNH!";
 
             if (btn.classList.contains("signup-submit")) {
-                const email = document.getElementById("cadastro-email")?.value.trim();
-                const numero = document.getElementById("cadastro-numero")?.value.trim();
+                limparErroCadastro();
 
-                mensagem = "Olá, vim pelo site e gostaria de fazer meu cadastro.";
+                const nome = cadastroNomeInput?.value.trim() || "";
+                const numero = cadastroNumeroInput?.value.trim() || "";
+                const telefoneFormatado = formatarTelefoneWhatsApp(numero);
 
-                if (email) {
-                    mensagem += ` Meu e-mail: ${email}.`;
+                if (nome.length < 2) {
+                    mostrarErroCadastro("Informe seu nome para continuar.", cadastroNomeInput);
+                    return;
                 }
 
-                if (numero) {
-                    mensagem += ` Meu telefone: ${numero}.`;
+                if (!telefoneFormatado) {
+                    mostrarErroCadastro("Informe um WhatsApp válido com DDD. Ex: (19) 99999-9999.", cadastroNumeroInput);
+                    return;
                 }
+
+                mensagem = `Olá, vim pelo site e gostaria de saber mais sobre a minha matrícula. Meu nome é ${nome}.`;
             }
 
-            abrirWhatsAppAleatorio(mensagem);
+            abrirWhatsAppAutoescola(mensagem);
         });
     });
 });
